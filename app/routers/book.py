@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-import uuid
-from app.core.deps import get_db
+from app.core.deps import get_db, require_role
 from app.schemas.book import BookCreate, BookUpdate, BookResponse
+import uuid
+from app.models.user import User, UserRole
 from app.services import book_service
 
 router = APIRouter(prefix="/books", tags=["books"])
@@ -29,5 +30,9 @@ def update_book(book_id: uuid.UUID, data: BookUpdate, db: Session = Depends(get_
 
 
 @router.delete("/{book_id}", status_code=204)
-def delete_book(book_id: uuid.UUID, db: Session = Depends(get_db)):
+def delete_book(
+    book_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_role(UserRole.admin)),
+):
     book_service.delete_book(db, book_id)

@@ -6,6 +6,7 @@ from app.db.session import SessionLocal
 from app.core.security import decode_access_token
 from app.repositories import user_repo
 from app.services.auth_service import token_blacklist
+from app.models.user import User, UserRole
 
 bearer_scheme = HTTPBearer()
 
@@ -44,3 +45,16 @@ def get_current_user(
             detail="Không tìm thấy user",
         )
     return user
+
+
+def require_role(*roles: UserRole):
+
+    def _checker(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role not in roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Yêu cầu quyền: {[r.value for r in roles]}",
+            )
+        return current_user
+
+    return _checker

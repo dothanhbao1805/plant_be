@@ -2,9 +2,10 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.main import app
-from app.db.base import Base
+
 from app.core.deps import get_db
+from app.db.base import Base
+from app.main import app
 
 # Dùng SQLite in-memory cho test — không cần PostgreSQL thật
 SQLALCHEMY_TEST_URL = "sqlite:///./test.db"

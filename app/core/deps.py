@@ -1,12 +1,14 @@
 from collections.abc import Generator
+
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
-from app.db.session import SessionLocal
+
 from app.core.security import decode_access_token
+from app.db.session import SessionLocal
+from app.models.user import User, UserRole
 from app.repositories import user_repo
 from app.services.auth_service import token_blacklist
-from app.models.user import User, UserRole
 
 bearer_scheme = HTTPBearer()
 

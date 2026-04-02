@@ -1,9 +1,11 @@
-from sqlalchemy.orm import Session
+import uuid
+
 from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
+
+from app.models.book import Book
 from app.repositories import book_repo
 from app.schemas.book import BookCreate, BookUpdate
-from app.models.book import Book
-import uuid
 
 
 def create_book(db: Session, data: BookCreate) -> Book:

@@ -1,9 +1,11 @@
+import uuid
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+
 from app.core.deps import get_db, require_role
-from app.schemas.book import BookCreate, BookUpdate, BookResponse
-import uuid
 from app.models.user import User, UserRole
+from app.schemas.book import BookCreate, BookResponse, BookUpdate
 from app.services import book_service
 
 router = APIRouter(prefix="/books", tags=["books"])
